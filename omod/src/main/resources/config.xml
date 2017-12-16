@@ -7,7 +7,7 @@
 	<name>${project.parent.name}</name>
 	<version>${project.parent.version}</version>
 	<package>org.openmrs.module.conditionui</package>
-	<author>Owais-IHS</author>
+	<author>Owais Ahmed</author>
 	<description>
 			${project.parent.description}
 	</description>
