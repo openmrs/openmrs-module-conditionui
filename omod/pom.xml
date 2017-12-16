@@ -44,12 +44,12 @@
 			<artifactId>uicommons-omod</artifactId>
 		</dependency>
 
-		<!--<dependency>
+		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>emrapi-condition-list</artifactId>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>referenceapplication-omod</artifactId>
 		</dependency> -->

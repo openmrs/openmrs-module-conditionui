@@ -28,7 +28,7 @@ import static org.openmrs.Condition.Status.INACTIVE;
 /**
  *  * Controller for a fragment that displays conditions for a patient
  */
-public class ConditionFragmentController {
+public class ConditionsFragmentController {
 	
 	public void controller(FragmentModel model, @FragmentParam("patientId") Patient patient,
 	        @SpringBean("conditionService") ConditionService service) {
