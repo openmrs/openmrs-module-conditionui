@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Condition.Status;
 import org.openmrs.Patient;
 import org.openmrs.module.emrapi.conditionslist.ConditionService;
@@ -32,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author owais.hussain@ihsinformatics.com
  */
 public class ManageconditionsPageController {
+	
+	protected final Log log = LogFactory.getLog(getClass());
 	
 	public void controller(PageModel model, @RequestParam("patientId") Patient patient,
 	        @RequestParam(value = "returnUrl", required = false) String returnUrl, UiUtils ui,
