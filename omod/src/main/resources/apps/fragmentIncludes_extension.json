@@ -1,0 +1,10 @@
+[
+    {
+        "id": "org.openmrs.module.conditionui.patientDashboard.secondColumnFragments",
+        "extensionPointId": "patientDashboard.secondColumnFragments",
+        "extensionParams": {
+            "provider": "conditionui",
+            "fragment": "conditions"
+        }
+    }
+]
