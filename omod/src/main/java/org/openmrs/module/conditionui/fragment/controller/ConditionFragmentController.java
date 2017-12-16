@@ -9,17 +9,20 @@
  */
 package org.openmrs.module.conditionui.fragment.controller;
 
-import org.openmrs.api.UserService;
+import org.openmrs.ui.framework.annotation.FragmentParam;
 import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.fragment.FragmentModel;
+import org.openmrs.module.emrapi.conditionslist.ConditionService;
+import org.openmrs.Patient;
 
 /**
- *  * Controller for a fragment that shows all users  
+ *  * Controller for a fragment that displays conditions for a patient
  */
-public class UsersFragmentController {
+public class ConditionFragmentController {
 	
-	public void controller(FragmentModel model, @SpringBean("userService") UserService service) {
-		model.addAttribute("users", service.getAllUsers());
+	public void controller(FragmentModel model, @FragmentParam("patientId") Patient patient,
+	        @SpringBean("conditionService") ConditionService service) {
+		model.addAttribute("conditions", service.getActiveConditions(patient));
 	}
 	
 }
