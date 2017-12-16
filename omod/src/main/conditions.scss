@@ -1,0 +1,15 @@
+@import "variables";
+
+.conditionStatus {
+	font-weight: bold;
+}
+
+form {
+	display: inline;
+}
+
+td { 
+	max-width: 100px; 
+	text-overflow: ellipsis; 
+	overflow: hidden;
+}

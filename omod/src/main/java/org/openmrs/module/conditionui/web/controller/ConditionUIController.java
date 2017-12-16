@@ -9,79 +9,70 @@
  */
 package org.openmrs.module.conditionui.web.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.User;
-import org.openmrs.api.UserService;
+import org.openmrs.Condition;
+import org.openmrs.Condition.Status;
+import org.openmrs.module.emrapi.conditionslist.ConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * This class configured as controller using annotation and mapped with the URL of
  * 'module/conditionui/conditionuiLink.form'.
  */
 @Controller("${rootrootArtifactId}.ConditionUIController")
-@RequestMapping(value = "module/conditionui/conditionui.form")
+@RequestMapping(value = "module/conditionui/manage")
 public class ConditionUIController {
 	
 	/** Logger for this class and subclasses */
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Autowired
-	UserService userService;
+	ConditionService conditionService;
 	
-	/** Success form view name */
-	private final String VIEW = "/module/conditionui/conditionui";
-	
-	/**
-	 * Initially called after the getUsers method to get the landing form name
-	 * 
-	 * @return String form view name
-	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public String onGet() {
-		return VIEW;
-	}
-	
-	/**
-	 * All the parameters are optional based on the necessity
-	 * 
-	 * @param httpSession
-	 * @param anyRequestObject
-	 * @param errors
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.POST)
-	public String onPost(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject,
-	        BindingResult errors) {
-		
-		if (errors.hasErrors()) {
-			// return error view
+	@RequestMapping("activate")
+	public @ResponseBody
+	String activate(@RequestParam("conditionUuid") String conditionUuid) {
+		Condition condition = conditionService.getConditionByUuid(conditionUuid);
+		condition.setStatus(Status.ACTIVE);
+		try {
+			conditionService.save(condition);
 		}
-		
-		return VIEW;
+		catch (Exception e) {
+			return "ERROR";
+		}
+		return "SUCCESS";
 	}
 	
-	/**
-	 * This class returns the form backing object. This can be a string, a boolean, or a normal java
-	 * pojo. The bean name defined in the ModelAttribute annotation and the type can be just defined
-	 * by the return type of this method
-	 */
-	@ModelAttribute("users")
-	protected List<User> getUsers() throws Exception {
-		List<User> users = userService.getAllUsers();
-		
-		// this object will be made available to the jsp page under the variable name
-		// that is defined in the @ModuleAttribute tag
-		return users;
+	@RequestMapping("deactivate")
+	public @ResponseBody
+	String deactivate(@RequestParam("conditionUuid") String conditionUuid) {
+		Condition condition = conditionService.getConditionByUuid(conditionUuid);
+		condition.setStatus(Status.INACTIVE);
+		try {
+			conditionService.save(condition);
+		}
+		catch (Exception e) {
+			return "ERROR";
+		}
+		return "SUCCESS";
 	}
 	
+	@RequestMapping("archive")
+	public @ResponseBody
+	String archive(@RequestParam("conditionUuid") String conditionUuid) {
+		Condition condition = conditionService.getConditionByUuid(conditionUuid);
+		condition.setStatus(Status.HISTORY_OF);
+		try {
+			conditionService.save(condition);
+		}
+		catch (Exception e) {
+			return "ERROR";
+		}
+		return "SUCCESS";
+	}
 }
