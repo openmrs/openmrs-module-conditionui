@@ -11,7 +11,7 @@ var breadcrumbs = [
 
 ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
 
-<% ui.includeJavascript("conditionui", "conditions.js") %>
+<% ui.includeJavascript("conditionui", "manageconditions.js") %>
 
 ${ ui.includeFragment("uicommons", "infoAndErrorMessage")}
 <h2>
@@ -37,25 +37,20 @@ ${ ui.includeFragment("uicommons", "infoAndErrorMessage")}
 		</tr>
 	<% } %>
 	
-	<% conditions.each { condition -> %>
-		<tr>
-			<td class="condition" onclick="location.href='${ ui.pageLink("conditionui", "condition", [conditionId:condition.id, patientId: patient.id, returnUrl: returnUrl]) }'" >
-			</td>
-			
-			<td onclick="location.href='${ ui.pageLink("conditionui", "condition", [conditionId:condition.id, patientId: patient.id, returnUrl: returnUrl]) }'" >
-				<% if (condition.status) { %> ${ ui.encodeHtmlContent(ui.format(condition.status.name)) } <% } %>
-			</td>
-			
-			<td onclick="location.href='${ ui.pageLink("conditionui", "condition", [conditionId:condition.id, patientId: patient.id, returnUrl: returnUrl]) }'" >
-				${ ui.formatDatetimePretty(condition.onSetDate) }
-			</td>
-			
-			<td>
-				<i class="icon-pencil edit-action" title="${ ui.message("coreapps.edit") }"
-				   onclick="location.href='${ ui.pageLink("conditionui", "condition", [conditionId:condition.id, patientId: patient.id, returnUrl: returnUrl]) }'"></i>
-				<i class="icon-remove delete-action" title="${ ui.message("coreapps.delete") }" onclick="removeCondition('${ ui.encodeJavaScriptAttribute(ui.format(condition)) }', ${ condition.id})"></i>
-			</td>
-		</tr>
+	<% conditions.each { conditionHistory -> %>
+		<% conditionHistory.conditions.each { condition -> %>
+			<tr>
+				<td>${ ui.encodeHtmlContent(ui.format(condition.concept.name)) }</td>
+				<td>${ ui.encodeHtmlContent(ui.format(condition.status)) }</td>
+				<td>${ ui.formatDatetimePretty(condition.onSetDate) }</td>
+					<td>
+					<i class="icon-pencil edit-action" title="${ ui.message("coreapps.edit") }"
+					   onclick="location.href='${ ui.pageLink("conditionui", "condition", [condition: condition.uuid, patientId: patient.id, returnUrl: returnUrl]) }'"></i>
+					<i class="icon-remove delete-action" title="${ ui.message("coreapps.delete") }" onclick="removeCondition('${ ui.encodeJavaScriptAttribute(ui.format(condition)) }', ${ condition.uuid})"></i>
+				</td>
+
+			</tr>
+		<% } %>
 	<% } %>
 </tbody>
 </table>

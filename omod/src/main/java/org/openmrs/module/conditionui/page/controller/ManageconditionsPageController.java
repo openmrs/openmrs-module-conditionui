@@ -10,15 +10,18 @@
 package org.openmrs.module.conditionui.page.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.Condition.Status;
 import org.openmrs.Patient;
 import org.openmrs.module.emrapi.conditionslist.ConditionService;
 import org.openmrs.module.emrapi.conditionslist.contract.Concept;
 import org.openmrs.module.emrapi.conditionslist.contract.Condition;
 import org.openmrs.module.emrapi.conditionslist.contract.ConditionHistory;
+import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,13 +31,20 @@ import org.springframework.web.bind.annotation.RequestParam;
  * 
  * @author owais.hussain@ihsinformatics.com
  */
-public class ManageConditionsPageController {
+public class ManageconditionsPageController {
 	
 	public void controller(PageModel model, @RequestParam("patientId") Patient patient,
+	        @RequestParam(value = "returnUrl", required = false) String returnUrl, UiUtils ui,
 	        @SpringBean("conditionService") ConditionService service) {
+		if (StringUtils.isBlank(returnUrl)) {
+			returnUrl = ui.pageLink("coreapps", "clinicianfacing/patient",
+			    Collections.singletonMap("patientId", (Object) patient.getId()));
+		}
 		// model.addAttribute("conditions",
 		// service.getConditionHistory(patient));
+		model.addAttribute("patient", patient);
 		model.addAttribute("conditions", dummyConditionHistory());
+		model.addAttribute("returnUrl", returnUrl);
 	}
 	
 	private List<ConditionHistory> dummyConditionHistory() {
@@ -50,6 +60,7 @@ public class ManageConditionsPageController {
 		condition.setCreator("Admin");
 		condition.setStatus(Status.ACTIVE);
 		condition.setUuid("080adc37-ad09-4825-b84e-abeb18d17085");
+		condition.setOnSetDate(new Date());
 		
 		conditions.add(condition);
 		conditionHistory.setConditions(conditions);
@@ -67,6 +78,7 @@ public class ManageConditionsPageController {
 		condition2.setCreator("Admin");
 		condition2.setStatus(Status.INACTIVE);
 		condition2.setUuid("080adc37-ad09-4825-b84e-abeb18d17088");
+		condition2.setOnSetDate(new Date());
 		
 		conditions2.add(condition2);
 		conditionHistory2.setConditions(conditions2);
