@@ -12,8 +12,8 @@
     ui.includeCss("uicommons", "ngDialog/ngDialog.min.css")
 
     ui.includeCss("conditionui", "conditions.css")
-    def isEdit = condition.id != null;
-    def title = ui.message("Add");
+    def isEdit = condition.uuid != null;
+    def title = ui.message("Add Condition");
 %>
 <script type="text/javascript">
     var breadcrumbs = [
@@ -41,19 +41,20 @@ ${ ui.includeFragment("allergyui", "removeAllergyDialog") }
     </button>
     <% } %>
 
-    <form method="post" id="condition" action="${ ui.pageLink("conditionui", "conditions", [patientId: patient.id, returnUrl: returnUrl]) }">
+    <form method="post" id="condition" action="${ ui.pageLink("conditionui", "addcondition", [patientId: patient.id, returnUrl: returnUrl]) }">
 
         <% if (isEdit) { %>
-        <input type="hidden" name="conditionId" value="${condition.id}" />
+        <input type="hidden" name="conditionId" value="${condition.uuid}" />
         <% } %>
 
-        <% if (!isEdit) { %>
+        <% if (!condition.id) { %>
         <div id="concept">
             <ul>
                 <li>
-                    <input type="hidden" name="concept" ng-value="concept ? 'CONCEPT:'+concept.uuid : 'NON_CODED:'+word">
-                    <coded-or-free-text-answer id="concept" concept-classes="8d490dfc-c2cc-11de-8d13-0010c6dffd0f,b4535251-9183-4175-959e-9ee67dc71e78"
-                                               ng-model="concept" ng-click="otherFieldFocus()" />
+                    <input type="hidden" name="conceptId" ng-value="concept ? 'CONCEPT:'+concept.concept.uuid : 'NON_CODED:' + word">
+                    <coded-or-free-text-answer id="conceptId"
+                                               concept-classes="8d4918b0-c2cc-11de-8d13-0010c6dffd0f,8d492954-c2cc-11de-8d13-0010c6dffd0f,8d492b2a-c2cc-11de-8d13-0010c6dffd0f,8d491a9a-c2cc-11de-8d13-0010c6dffd0f"
+                                               ng-model="concept" />
                 </li>
             </ul>
             <% } %>
@@ -63,15 +64,15 @@ ${ ui.includeFragment("allergyui", "removeAllergyDialog") }
             <label class="heading">${ ui.message("Status") }:</label>
             <p>
                 <input type="radio" id="status-1" class="condition-status" name="status" value="ACTIVE" ng-model="status"/>
-                <label for="status-1">Status</label>
+                <label for="status-1">ACTIVE</label>
             </p>
             <p>
                 <input type="radio" id="status-2" class="condition-status" name="status" value="INACTIVE" ng-model="status"/>
-                <label for="status-2">Status</label>
+                <label for="status-2">INACTIVE</label>
             </p>
             <p>
                 <input type="radio" id="status-3" class="condition-status" name="status" value="HISTORY_OF" ng-model="status"/>
-                <label for="status-3">Status</label>
+                <label for="status-3">HISTORY_OF</label>
             </p>
             <i class="icon-remove delete-item" title="${ ui.message("general.clear") }" ng-click="status = null"></i>
         </div>
