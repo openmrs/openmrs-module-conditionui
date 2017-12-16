@@ -73,5 +73,4 @@ public class ConditionsFragmentController {
 		
 		return conditionHistories;
 	}
-	
 }
