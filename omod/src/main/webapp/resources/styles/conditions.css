@@ -44,3 +44,25 @@ form > div {
     margin-bottom: 15px;
 
 }
+
+.conditions-table {
+    border: none;
+    width: 80%;
+}
+
+ul#concept-and-date {
+    min-width: 200px;
+    list-style: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+ul#concept-and-date .group {
+    display: inline;
+    padding-right: 20px;
+}
+
+#actions {
+    padding-top: 15px;
+    padding-bottom: 10px;
+}

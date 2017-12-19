@@ -86,7 +86,7 @@ public class AddconditionPageController {
 			condition.setConcept(concept);
 			condition.setStatus(status);
 			condition = conditionService.save(condition);
-			InfoErrorMessageUtil.flashInfoMessage(session, successMsgCode);
+			//InfoErrorMessageUtil.flashInfoMessage(session, successMsgCode);
 			
 			return "redirect:conditionui/manageconditions.page?patientId=" + patient.getPatientId() + "&returnUrl="
 			        + ui.urlEncode(returnUrl);

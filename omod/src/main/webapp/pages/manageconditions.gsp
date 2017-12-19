@@ -60,6 +60,6 @@ ${ ui.includeFragment("uicommons", "infoAndErrorMessage")}
 <button class="cancel" onclick="location.href='${ ui.encodeHtml(returnUrl) }'">
 	${ ui.message("uicommons.return") }
 </button>
-<button id ="conditionui-addNewCondition" class="confirm right" onclick="location.href='${ ui.pageLink("conditionui", "addcondition", [patientId: patient.id, returnUrl: returnUrl]) }'">
+<button id ="conditionui-addNewCondition" class="confirm right" onclick="location.href='${ ui.pageLink("conditionui", "addcondition", [patientId: patient.uuid, returnUrl: returnUrl]) }'">
 	${ ui.message("conditionui.addNewCondition") }
 </button>
