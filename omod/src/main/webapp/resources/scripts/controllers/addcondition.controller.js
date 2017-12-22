@@ -1,10 +1,10 @@
 var app = angular.module("conditionApp",
-    ['uicommons.widget.coded-or-free-text-answer', 'app.restfulServices', 'app.models']);
+    ['uicommons.widget.coded-or-free-text-answer', 'app.restfulServices', 'app.models', 'app.commonFunctionsFactory']);
 
 app.controller("ConditionController", ConditionController);
-ConditionController.$inject = ['$scope', 'RestfulService', 'ConditionModel'];
+ConditionController.$inject = ['$scope', 'RestfulService', 'ConditionModel', 'ConceptModel', 'CommonFunctions'];
 
-function ConditionController($scope, RestfulService, ConditionModel) {
+function ConditionController($scope, RestfulService, ConditionModel, ConceptModel, CommonFunctions) {
     var self = this;
 
     $scope.patientUuid = null;
@@ -14,50 +14,53 @@ function ConditionController($scope, RestfulService, ConditionModel) {
     RestfulService.setBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/ws/rest/emrapi');
 
     /**
-     * Still working on it (WIP)
+     * Perform POST save
+     * PS: Make sure the 'Non Coded Uuid' setting (under Settings->Condition List) is set inorder to work with noncoded concepts,
+     * the LOCALE needs to be set (most concepts have 'en')
      * @type {Function}
      */
     self.saveCondition = self.saveCondition || function () {
-            var requestParams = {};
-            requestParams['conditions'] = $scope.conditions;
-            RestfulService.get('condition', requestParams, function (data) {
-                $scope.conditions = data;
+            var conditions = [];
+            conditions.push($scope.condition);
+            RestfulService.post('condition', conditions, function (data) {
+                emr.successAlert("conditionui.condition.success");
             }, function (error) {
-                console.log(error);
-            })
+                emr.errorAlert("conditionui.condition.error");
+            });
         }
 
     self.initCondition = self.initCondition || function () {
-            $scope.patientUuid = self.extractUrlArgs(window.location.search)['patientId'];
+            $scope.patientUuid = CommonFunctions.extractUrlArgs(window.location.search)['patientId'];
             $scope.condition = new ConditionModel($scope.patientUuid);
         }
 
     self.validateCondition = self.validateCondition || function () {
+            var concept = $scope.concept.concept;
+            if (concept !== null) {
+                $scope.condition.concept = new ConceptModel(concept.uuid, concept.display);
+            } else {
+                // noncoded diagnosis
+                $scope.condition.conditionNonCoded = "NON_CODED:" + $scope.concept.word;
+            }
+
+            $scope.condition.onSetDate = self.getSelectedDate();
+
+            self.saveCondition();
         }
 
     self.unselectStatus = self.unselectStatus || function () {
             $scope.condition.status = null;
         }
 
-    self.extractUrlArgs = self.extractUrlArgs || function (urlArgs) {
-            var urlParams = [];
-            urlArgs = urlArgs.replace('?', '');
-            if (urlArgs.indexOf("&") > 0) {
-                var params = urlArgs.split("&");
-                for (var i = 0; i < params.length; i++) {
-                    var param = params[i];
-                    var paramArgs = param.split("=");
-                    urlParams[paramArgs[0]] = paramArgs[1];
-                }
-            }
-
-            return urlParams;
+    self.getSelectedDate = self.getSelectedDate || function () {
+            var datePicker = angular.element(document.getElementsByName('conditionStartDate'))[0];
+            return datePicker.value;
         }
 
     // init page
     self.initCondition();
 
     // bind functions to scope
-    $scope.saveCondition = self.saveCondition;
+    $scope.validateCondition = self.validateCondition;
     $scope.unselectStatus = self.unselectStatus;
 }

@@ -1,21 +1,22 @@
 (function() {
     'use strict';
 
-    var baseModel = angular.module('app.models', []);
+    var baseModel = angular.module('app.models');
 
-    function ConditionModel() {
+    function ConditionModel(ConceptModel) {
 
-        function ConditionModel(patient) {
+        function ConditionModel(patientUuid) {
             this.status = 'ACTIVE';
-            this.patient = patient;
-            this.previousCondition = '';
-            this.concept = '';
+            this.patientUuid = patientUuid;
+            this.previousConditionUuid = '';
+            this.concept = new ConceptModel('', '');
             this.conditionNonCoded = '';
 
-            this.onsetDate = '';
+            this.onSetDate = '';
             this.additionalDetail = '';
             this.endDate = '';
-            this.endReason = '';
+            this.endReason = new ConceptModel();
+            this.voided = false;
         }
 
         ConditionModel.prototype = {
@@ -28,20 +29,28 @@
                 this.status = status;
             },
 
-            getPatient: function() {
-                return this.patient;
+            getPatientUuid: function() {
+                return this.patientUuid;
             },
 
-            setPatient: function(patient) {
-                this.patient = patient;
+            setPatientUuid: function(patientUuid) {
+                this.patientUuid = patientUuid;
             },
 
-            getPreviousCondition: function() {
-                return this.previousCondition;
+            getPreviousConditionUuid: function() {
+                return this.previousConditionUuid;
             },
 
-            setPreviousCondition: function(previousCondition) {
-                this.previousCondition = previousCondition;
+            setPreviousConditionUuid: function(previousConditionUuid) {
+                this.previousConditionUuid = previousConditionUuid;
+            },
+
+            getConcept: function() {
+                return this.concept;
+            },
+
+            setConcept: function(concept) {
+                this.concept = concept;
             },
 
             setConditionNonCoded: function(conditionNonCoded) {
@@ -52,12 +61,12 @@
                 return this.conditionNonCoded;
             },
 
-            getOnsetDate: function() {
-                return this.onsetDate;
+            getOnSetDate: function() {
+                return this.onSetDate;
             },
 
-            setOnsetDate: function(onsetDate) {
-                this.onsetDate = onsetDate;
+            setOnSetDate: function(onSetDate) {
+                this.onSetDate = onSetDate;
             },
 
             getAdditionalDetail: function() {
@@ -89,5 +98,5 @@
     }
 
     baseModel.factory("ConditionModel", ConditionModel);
-    ConditionModel.$inject = [];
+    ConditionModel.$inject = ['ConceptModel'];
 })();

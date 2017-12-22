@@ -4,15 +4,15 @@
 
     app.service('RestfulService', RestfulService);
 
-    RestfulService.$inject = ['Restangular'];
+    RestfulService.$inject = ['Restangular', '$filter'];
 
-    function RestfulService(Restangular) {
+    function RestfulService(Restangular, $filter) {
         var service;
 
         service = {
             setBaseUrl: setBaseUrl,
             get: get,
-            save: save
+            post: post
         };
 
         return service;
@@ -35,10 +35,10 @@
             });
         }
 
-        function save(resource, uuid, request, successCallback, errorCallback) {
+        function post(resource, request, successCallback, errorCallback) {
             var params = JSON.stringify(request);
 
-            Restangular.one(resource, uuid).customPOST(params).then(function (data) {
+            Restangular.one(resource).customPOST(params).then(function (data) {
                 if (typeof successCallback === 'function') successCallback(data);
             }, function (error) {
                 if (typeof errorCallback === 'function') {

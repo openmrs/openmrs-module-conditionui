@@ -2,7 +2,6 @@
     ui.decorateWith("appui", "standardEmrPage")
     ui.includeJavascript("uicommons", "angular.min.js")
     ui.includeJavascript("uicommons", "angular-ui/ui-bootstrap-tpls-0.11.2.min.js")
-    ui.includeJavascript("allergyui", "allergy.js")
     ui.includeJavascript("uicommons", "angular-resource.min.js")
     ui.includeJavascript("uicommons", "angular-common.js")
     ui.includeJavascript("uicommons", "ngDialog/ngDialog.js")
@@ -11,10 +10,15 @@
     ui.includeJavascript("uicommons", "directives/coded-or-free-text-answer.js")
 
     ui.includeFragment("coreapps", "patientHeader", [patient: patient])
+
     ui.includeJavascript("conditionui", "lib/restangular.min.js")
     ui.includeJavascript("conditionui", "restful-services/restful-service.js");
+    ui.includeJavascript("conditionui", "models/model.module.js")
     ui.includeJavascript("conditionui", "models/condition.history.model.js")
+    ui.includeJavascript("conditionui", "models/concept.model.js")
     ui.includeJavascript("conditionui", "models/condition.model.js")
+    ui.includeJavascript("conditionui", "emr.messages.js")
+    ui.includeJavascript("conditionui", "common.functions.js")
     ui.includeJavascript("conditionui", "controllers/addcondition.controller.js")
 
     ui.includeCss("uicommons", "ngDialog/ngDialog.min.css")
@@ -44,7 +48,7 @@
             <li class="group">
                 <coded-or-free-text-answer id="conceptId" class="concept"
                                            concept-classes="8d4918b0-c2cc-11de-8d13-0010c6dffd0f,8d492954-c2cc-11de-8d13-0010c6dffd0f,8d492b2a-c2cc-11de-8d13-0010c6dffd0f,8d491a9a-c2cc-11de-8d13-0010c6dffd0f"
-                                           ng-model="condition.concept"/>
+                                           ng-model="concept"/>
             </li>
             <li class="group">
                 ${ui.includeFragment("uicommons", "field/datetimepicker", [
@@ -75,8 +79,8 @@
 
     <div id="actions">
         <input type="submit" id="addConditionBtn" class="confirm right"
-               value="${ui.message("coreapps.save")}"/>
-        <button class="cancel" onclick="location.href='${ui.pageLink("conditionui", "manageconditions", [patientId: patient.id, returnUrl: returnUrl])}'">
+               value="${ui.message("coreapps.save")}" ng-click="validateCondition()"/>
+        <button class="cancel" onclick="location.href='${ui.pageLink("conditionui", "manageconditions", [patientId: patient.uuid, returnUrl: returnUrl])}'">
             ${ ui.message("coreapps.cancel") }
         </button>
     </div>
