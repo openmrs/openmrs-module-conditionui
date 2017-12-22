@@ -24,6 +24,7 @@ function ConditionController($scope, RestfulService, ConditionModel, ConceptMode
             conditions.push($scope.condition);
             RestfulService.post('condition', conditions, function (data) {
                 emr.successAlert("conditionui.condition.success");
+                window.location = '/' + OPENMRS_CONTEXT_PATH + '/conditionui/manageconditions.page?patientId=' + $scope.patientUuid + '&';
             }, function (error) {
                 emr.errorAlert("conditionui.condition.error");
             });
