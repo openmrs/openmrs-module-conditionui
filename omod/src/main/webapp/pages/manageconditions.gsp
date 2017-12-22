@@ -33,50 +33,116 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
     ];
 </script>
 
+<script>
+    jQuery.noConflict();
+    jQuery(function () {
+        jQuery("#tabs").tabs();
+    });
+</script>
+
 <h2>${ui.message("conditionui.manageConditions")}<td></h2>
 
 <div id="condition" ng-app="manageConditionsApp" ng-controller="ManageConditionsController">
-    <table id="conditions" class="conditions-table">
-        <thead>
-        <tr>
-            <th>${ui.message("conditionui.condition")}</th>
-            <th>${ui.message("conditionui.status")}</th>
-            <th>${ui.message("conditionui.onsetdate")}</th>
-            <th>${ui.message("coreapps.actions")}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-if="conditions.size() == 0">
-            <td colspan="6" align="center">
-                ${ui.message("conditionui.noKnownConditions")}
-            </td>
-        </tr>
-        <tbody ng-repeat="conditionHistory in conditionHistoryList">
-        <tr class="clickable-tr" ng-repeat="condition in conditionHistory.conditions">
-            {{condition}}
-            <td>{{condition.concept.name}}</td>
-            <td>{{condition.status}}</td>
-            <td>{{formatDate(condition.onSetDate)}}</td>
-            <td>
-                <i class="icon-plus-sign edit-action" title="${ui.message("conditionui.active")}"
-                   ng-click="activateCondition(condition)" ng-if="condition.status==='INACTIVE'"></i>
-                <i class="icon-minus-sign edit-action" title="${ui.message("conditionui.inactive")}"
-                   ng-click="deactivateCondition(condition)" ng-if="condition.status==='ACTIVE'"></i>
-                <i class="icon-folder-close edit-action" title="${ui.message("conditionui.historyof")}"
-                   ng-click="moveToHistoryCondition(condition)" ng-if="condition.status!=='HISTORY_OF'"></i>
-                <i class="icon-remove delete-action" title="${ui.message("coreapps.delete")}"
-                   ng-click="removeCondition(condition)" ng-if="condition.voided===false"></i>
-                <i class="icon-undo delete-action" title="${ui.message("conditionui.undo")}"
-                   ng-click="undoCondition(condition)" ng-if="condition.voided===true"></i>
-            </td>
-        </tr>
-        </tbody>
-    </tbody>
-    </table>
+    <div id="tabs">
+        <ul>
+            <li>
+                <a href="#activeConditionsTab" class="tabs-height">
+                    ${ui.message('Active Conditions')}
+                </a>
+            </li>
+            <li>
+                <a href="#inactiveConditionsTab" class="tabs-height">
+                    ${ui.message('Inactive Conditions')}
+                </a>
+            </li>
+        </ul>
 
-    <button class="cancel" onclick="location.href = '${ ui.encodeHtml(returnUrl) }'">${ui.message("uicommons.return")}</button>
-    <button id="conditionui-addNewCondition" class="confirm right"
-            onclick="location.href = '${ ui.pageLink("conditionui", "addcondition", [patientId: patient.uuid, returnUrl: returnUrl]) }'">
-        ${ui.message("conditionui.addNewCondition")}
-    </button>
+        <div id="activeConditionsTab">
+            <table class="conditions-table">
+                <thead>
+                <tr>
+                    <th>${ui.message("conditionui.condition")}</th>
+                    <th>${ui.message("conditionui.status")}</th>
+                    <th>${ui.message("conditionui.onsetdate")}</th>
+                    <th>${ui.message("coreapps.actions")}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="conditions.size() == 0">
+                    <td colspan="6" align="center">
+                        ${ui.message("conditionui.noKnownConditions")}
+                    </td>
+                </tr>
+                <tbody ng-repeat="conditionHistory in conditionHistoryList">
+                <tr class="clickable-tr" ng-repeat="condition in conditionHistory.conditions"
+                    ng-show="condition.status==='ACTIVE'">
+                    <td>{{condition.concept.name}}</td>
+                    <td>{{condition.status}}</td>
+                    <td>{{formatDate(condition.onSetDate)}}</td>
+                    <td>
+                        <i class="icon-plus-sign edit-action" title="${ui.message("conditionui.active")}"
+                           ng-click="activateCondition(condition)" ng-if="condition.status==='INACTIVE'"></i>
+                        <i class="icon-minus-sign edit-action" title="${ui.message("conditionui.inactive")}"
+                           ng-click="deactivateCondition(condition)" ng-if="condition.status==='ACTIVE'"></i>
+                        <i class="icon-folder-close edit-action" title="${ui.message("conditionui.historyof")}"
+                           ng-click="moveToHistoryCondition(condition)" ng-if="condition.status!=='HISTORY_OF'"></i>
+                        <i class="icon-remove delete-action" title="${ui.message("coreapps.delete")}"
+                           ng-click="removeCondition(condition)" ng-if="condition.voided===false"></i>
+                        <i class="icon-undo delete-action" title="${ui.message("conditionui.undo")}"
+                           ng-click="undoCondition(condition)" ng-if="condition.voided===true"></i>
+                    </td>
+                </tr>
+                </tbody>
+            </tbody>
+            </table>
+        </div>
+        <div id="inactiveConditionsTab">
+            <table class="conditions-table">
+                <thead>
+                <tr>
+                    <th>${ui.message("conditionui.condition")}</th>
+                    <th>${ui.message("conditionui.status")}</th>
+                    <th>${ui.message("conditionui.onsetdate")}</th>
+                    <th>${ui.message("coreapps.actions")}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="conditions.size() == 0">
+                    <td colspan="6" align="center">
+                        ${ui.message("conditionui.noKnownConditions")}
+                    </td>
+                </tr>
+                <tbody ng-repeat="conditionHistory in conditionHistoryList">
+                <tr class="clickable-tr" ng-repeat="condition in conditionHistory.conditions"
+                    ng-show="condition.status!=='ACTIVE'">
+                    <td>{{condition.concept.name}}</td>
+                    <td>{{condition.status}}</td>
+                    <td>{{formatDate(condition.onSetDate)}}</td>
+                    <td>
+                        <i class="icon-plus-sign edit-action" title="${ui.message("conditionui.active")}"
+                           ng-click="activateCondition(condition)" ng-if="condition.status==='INACTIVE'"></i>
+                        <i class="icon-minus-sign edit-action" title="${ui.message("conditionui.inactive")}"
+                           ng-click="deactivateCondition(condition)" ng-if="condition.status==='ACTIVE'"></i>
+                        <i class="icon-folder-close edit-action" title="${ui.message("conditionui.historyof")}"
+                           ng-click="moveToHistoryCondition(condition)" ng-if="condition.status!=='HISTORY_OF'"></i>
+                        <i class="icon-remove delete-action" title="${ui.message("coreapps.delete")}"
+                           ng-click="removeCondition(condition)" ng-if="condition.voided===false"></i>
+                        <i class="icon-undo delete-action" title="${ui.message("conditionui.undo")}"
+                           ng-click="undoCondition(condition)" ng-if="condition.voided===true"></i>
+                    </td>
+                </tr>
+                </tbody>
+            </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="cancel"
+                onclick="location.href = '${ ui.encodeHtml(returnUrl) }'">${ui.message("coreapps.cancel")}</button>
+        <button id="conditionui-addNewCondition" class="confirm right"
+                onclick="location.href = '${ ui.pageLink("conditionui", "addcondition", [patientId: patient.uuid, returnUrl: returnUrl]) }'">
+            ${ui.message("conditionui.addNewCondition")}
+        </button>
+    </div>
 </div>

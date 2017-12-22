@@ -47,7 +47,6 @@ form > div {
 .conditions-table {
     border: none;
     width: 100%;
-    margin-bottom: 20px;
 }
 
 ul#concept-and-date {
@@ -62,7 +61,6 @@ ul#concept-and-date .group {
     padding-right: 20px;
 }
 
-#actions {
-    padding-top: 15px;
-    padding-bottom: 10px;
+.actions {
+    margin-top: 15px;
 }
