@@ -14,10 +14,9 @@
         <ul>
             <% conditions.each { conditionhistory ->
                 conditionhistory.conditions.each { condition ->
-                    if (!condition.endDate && !condition.status.toString().equals("INACTIVE")) { %>
+                    if (condition.status.toString().equals("ACTIVE")) { %>
             <li>
                 <span class="conditionStatus">
-                    ${condition.status.toString().equals("HISTORY_OF") ? "History of " : ""}
                     ${condition.concept.name}
                 </span>
             </li>
