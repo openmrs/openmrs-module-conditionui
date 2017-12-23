@@ -15,12 +15,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.openmrs.module.conditionui.ConditionUIConstants;
+
+import org.openmrs.api.context.Context;
 
 /**
  * Controller for a fragment that displays conditions for a patient
@@ -28,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author owais.hussain@ihsinformatics.com
  */
 public class ManageconditionsPageController {
-	
-	protected final Log log = LogFactory.getLog(getClass());
 	
 	public void controller(PageModel model, @RequestParam("patientId") Patient patient,
 	        @RequestParam(value = "returnUrl", required = false) String returnUrl, UiUtils ui) {
@@ -40,5 +39,7 @@ public class ManageconditionsPageController {
 		
 		model.addAttribute("patient", patient);
 		model.addAttribute("returnUrl", returnUrl);
+		model.addAttribute("hasModifyConditionsPrivilege",
+		    Context.getAuthenticatedUser().hasPrivilege(ConditionUIConstants.MANAGE_CONDITIONS_PRIVILEGE));
 	}
 }

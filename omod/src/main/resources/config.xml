@@ -54,15 +54,11 @@
 		<class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class>
 	</advice>
 	 /AOP -->
-	
-	
-	<!-- Required Privileges 
-	<privilege>
-		<name>Form Entry</name>
-		<description>Allows user to access Form Entry pages/functions</description>
-	</privilege>
-	 /Required Privileges -->
 
+	<privilege>
+		<name>Task: Manage Condition Lists</name>
+		<description>Able to activate/inactivate/void condition lists.</description>
+	</privilege>
 
 	<!-- Required Global Properties 
 	<globalProperty>

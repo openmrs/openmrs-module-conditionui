@@ -66,7 +66,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
                         <th>${ui.message("conditionui.condition")}</th>
                         <th>${ui.message("conditionui.status")}</th>
                         <th>${ui.message("conditionui.onsetdate")}</th>
-                        <th>${ui.message("coreapps.actions")}</th>
+                        <th ng-if="'${hasModifyConditionsPrivilege}'">${ui.message("coreapps.actions")}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -81,7 +81,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
                         <td ng-style="strikeThrough(condition.voided)">{{condition.concept.name}}</td>
                         <td ng-style="strikeThrough(condition.voided)">{{condition.status}}</td>
                         <td ng-style="strikeThrough(condition.voided)">{{formatDate(condition.onSetDate)}}</td>
-                        <td>
+                        <td ng-if="'${hasModifyConditionsPrivilege}'">
                             <i class="icon-plus-sign edit-action" title="${ui.message("conditionui.active")}"
                                ng-click="activateCondition(condition)" ng-if="condition.status==='INACTIVE' && condition.voided===false"></i>
                             <i class="icon-minus-sign edit-action" title="${ui.message("conditionui.inactive")}"

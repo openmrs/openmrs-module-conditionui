@@ -33,11 +33,11 @@
         <ul ng-repeat="conditionHistory in conditionHistoryList">
             <li class="conditionStatus" ng-repeat="condition in conditionHistory.conditions"
                 ng-show="condition.status === 'ACTIVE'">
-                {{condition.concept.name}}
+                <span ng-style="strikeThrough(condition.voided)">{{condition.concept.name}}</span>
                 <i class="icon-remove delete-action" title="${ui.message("coreapps.delete")}"
-                   ng-click="removeCondition(condition)" ng-if="condition.voided===false"></i>
+                   ng-click="removeCondition(condition)" ng-if="condition.voided===false && '${hasModifyConditionsPrivilege}'"></i>
                 <i class="icon-undo delete-action" title="${ui.message("conditionui.undo")}"
-                   ng-click="undoCondition(condition)" ng-if="condition.voided===true"></i>
+                   ng-click="undoCondition(condition)" ng-if="condition.voided===true && '${hasModifyConditionsPrivilege}'"></i>
             </li>
         </ul>
     </div>
