@@ -42,7 +42,8 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 
 <h2>${ui.message("conditionui.manageConditions")}<td></h2>
 
-<div id="condition" ng-app="manageConditionsApp" ng-controller="ManageConditionsController">
+<div id="condition" ng-app="manageConditionsApp" ng-controller="ManageConditionsController"
+     ng-init="conditionHistoryList = getConditions('${patient.uuid}')">
     <div id="tabs">
         <ul>
             <li>

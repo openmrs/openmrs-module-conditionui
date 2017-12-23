@@ -12,12 +12,19 @@ function ManageConditionsController($scope, RestfulService, CommonFunctions) {
     // this is required inorder to initialize the Restangular service
     RestfulService.setBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/ws/rest/emrapi');
 
-    self.getConditions = self.getConditions || function () {
-            $scope.patientUuid = CommonFunctions.extractUrlArgs(window.location.search)['patientId'];
-            RestfulService.get('conditionhistory', {"patientUuid": $scope.patientUuid}, function (data) {
-                $scope.conditionHistoryList = data;
-            }, function (error) {
-            });
+    self.getConditions = self.getConditions || function (patientUuid) {
+            if (patientUuid == null || patientUuid == undefined) {
+                $scope.patientUuid = CommonFunctions.extractUrlArgs(window.location.search)['patientId'];
+            } else {
+                $scope.patientUuid = patientUuid;
+            }
+
+            if ($scope.patientUuid !== null && $scope.patientUuid !== undefined) {
+                RestfulService.get('conditionhistory', {"patientUuid": $scope.patientUuid}, function (data) {
+                    $scope.conditionHistoryList = data;
+                }, function (error) {
+                });
+            }
         }
 
     self.activateCondition = self.activateCondition || function (condition) {
@@ -41,7 +48,7 @@ function ManageConditionsController($scope, RestfulService, CommonFunctions) {
             self.saveCondition(condition);
         }
 
-    self.undoCondition = self.undoCondition || function(condition) {
+    self.undoCondition = self.undoCondition || function (condition) {
             condition.voided = false;
             condition.endDate = null;
             self.saveCondition(condition);
@@ -59,9 +66,6 @@ function ManageConditionsController($scope, RestfulService, CommonFunctions) {
             });
         }
 
-    // init
-    self.getConditions();
-
     // bind functions to scope
     $scope.removeCondition = self.removeCondition;
     $scope.activateCondition = self.activateCondition;
@@ -70,4 +74,5 @@ function ManageConditionsController($scope, RestfulService, CommonFunctions) {
     $scope.undoCondition = self.undoCondition;
     $scope.formatDate = CommonFunctions.formatDate;
     $scope.strikeThrough = CommonFunctions.strikeThrough;
+    $scope.getConditions = self.getConditions;
 }
