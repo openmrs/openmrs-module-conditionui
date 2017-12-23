@@ -1,4 +1,4 @@
 emr.loadMessages([
-    "conditionui.condition.success",
-    "conditionui.condition.error",
+    "conditionui.updateCondition.success",
+    "conditionui.updateCondition.error",
 ]);

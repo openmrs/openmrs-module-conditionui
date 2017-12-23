@@ -10,7 +10,8 @@
         var service;
         service = {
             extractUrlArgs: extractUrlArgs,
-            formatDate: formatDate
+            formatDate: formatDate,
+            strikeThrough: strikeThrough
         };
 
         function extractUrlArgs(urlArgs) {
@@ -32,6 +33,16 @@
             if (date !== null) {
                 var format = 'yyyy-MM-dd';
                 return ($filter('date')(new Date(date), format));
+            }
+        }
+
+        function strikeThrough(apply) {
+            if (apply) {
+                return {
+                    "text-decoration": "line-through"
+                };
+            } else {
+                return {};
             }
         }
 

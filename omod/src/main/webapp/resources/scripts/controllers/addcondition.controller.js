@@ -23,10 +23,12 @@ function ConditionController($scope, RestfulService, ConditionModel, ConceptMode
             var conditions = [];
             conditions.push($scope.condition);
             RestfulService.post('condition', conditions, function (data) {
-                emr.successAlert("conditionui.condition.success");
+                //emr.successAlert("conditionui.updateCondition.success"); Messages not being resolved
+                emr.successAlert("Condition added successfully")
                 window.location = '/' + OPENMRS_CONTEXT_PATH + '/conditionui/manageconditions.page?patientId=' + $scope.patientUuid + '&';
             }, function (error) {
-                emr.errorAlert("conditionui.condition.error");
+                //emr.errorAlert("conditionui.updateCondition.error");
+                emr.errorAlert("Error Saving condition");
             });
         }
 

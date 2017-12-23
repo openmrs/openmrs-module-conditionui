@@ -7,6 +7,7 @@ ManageConditionsController.$inject = ['$scope', 'RestfulService', 'CommonFunctio
 function ManageConditionsController($scope, RestfulService, CommonFunctions) {
     var self = this;
     $scope.conditions = [];
+    $scope.tabs = ["ACTIVE", "INACTIVE"];
 
     // this is required inorder to initialize the Restangular service
     RestfulService.setBaseUrl('/' + OPENMRS_CONTEXT_PATH + '/ws/rest/emrapi');
@@ -50,10 +51,11 @@ function ManageConditionsController($scope, RestfulService, CommonFunctions) {
             var conditions = [];
             conditions.push(condition);
             RestfulService.post('condition', conditions, function (data) {
-                console.log(data);
-                emr.successAlert("conditionui.condition.success");
+                //emr.successAlert("conditionui.updateCondition.success");
+                emr.successAlert("Condition Saved Successfully");
             }, function (error) {
-                emr.errorAlert("conditionui.condition.error");
+                //emr.errorAlert("conditionui.updateCondition.error");
+                emr.errorAlert("Error Saving condition");
             });
         }
 
@@ -67,4 +69,5 @@ function ManageConditionsController($scope, RestfulService, CommonFunctions) {
     $scope.moveToHistoryCondition = self.moveToHistoryCondition;
     $scope.undoCondition = self.undoCondition;
     $scope.formatDate = CommonFunctions.formatDate;
+    $scope.strikeThrough = CommonFunctions.strikeThrough;
 }
