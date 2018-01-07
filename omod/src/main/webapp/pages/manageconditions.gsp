@@ -76,7 +76,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
                         </td>
                     </tr>
                     <tbody ng-repeat="conditionHistory in conditionHistoryList">
-                    <tr class="clickable-tr" ng-repeat="condition in conditionHistory.conditions"
+                    <tr class="clickable-tr" ng-init="condition = conditionHistory.conditions[0]"
                         ng-show="condition.status===tab">
                         <td ng-style="strikeThrough(condition.voided)">{{condition.concept.name}}</td>
                         <td ng-style="strikeThrough(condition.voided)">{{condition.status}}</td>

@@ -31,7 +31,7 @@
 
     <div class="info-body">
         <ul ng-repeat="conditionHistory in conditionHistoryList">
-            <li class="conditionStatus" ng-repeat="condition in conditionHistory.conditions"
+            <li class="conditionStatus" ng-init="condition = conditionHistory.conditions[0]"
                 ng-show="condition.status === 'ACTIVE'">
                 <span ng-style="strikeThrough(condition.voided)">{{condition.concept.name}}</span>
                 <i class="icon-remove delete-action" title="${ui.message("coreapps.delete")}"
