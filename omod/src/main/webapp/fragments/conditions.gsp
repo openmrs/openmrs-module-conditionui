@@ -1,4 +1,5 @@
 <%
+    ui.includeJavascript("appui", "standardEmrIncludes.js")
 
     ui.includeJavascript("uicommons", "angular.min.js")
     ui.includeJavascript("uicommons", "angular-ui/ui-bootstrap-tpls-0.11.2.min.js")
